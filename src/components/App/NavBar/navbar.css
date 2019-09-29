@@ -1,0 +1,40 @@
+.navbar {
+    overflow: hidden;
+    background-color: #2d3436;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    padding: 0;
+    height: 50px;
+    font-family: 'Orbitron', sans-serif;
+  }
+  
+  .navbar a {
+    /* float: left; */
+    /* display: block; */
+    color: #f2f2f2;
+    /* text-align: center; */
+    /* padding: 14px 16px; */
+    text-decoration: none;
+    font-size: 14px;
+    align-self: center;     
+    padding: 16px;
+    margin: -15px; 
+    border-radius: 5px;
+    font-weight: bold;
+  }
+  
+  .navbar a:hover {
+    color: #ff9f1a;
+  }
+  
+  .navbar a.active {
+    color: white;
+  }  
+
+
+
+

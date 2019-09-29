@@ -1,0 +1,30 @@
+.viewerContainer {
+    width: 90%;
+    height: 390px;
+    display: flex;
+    flex-direction: column;
+
+    /* justify-content: space-around; */
+    font-size: 16px;
+    margin: auto;
+    font-family: 'Orbitron', sans-serif;
+    color: antiquewhite;
+  }
+.Info {
+  color: #ff9f1a;
+  font-weight: bold;
+  font-size: 18px;
+  text-decoration: underline;
+  
+}
+
+.statsList {
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+    padding-top: 30px;
+}
+
+viewer {
+color: green;
+}

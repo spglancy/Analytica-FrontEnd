@@ -1,6 +1,9 @@
 import React from 'react'
 import Authentication from '../Authentication/Authentication'
 import CommandListContainer from './CommandListContainer/CommandListContainer'
+import firestore from './firebase.js'
+import StatsList from './StatListContainer/StatsList'
+import Navbar from './NavBar/navbar'
 
 import './App.css'
 
@@ -15,7 +18,12 @@ export default class App extends React.Component{
         this.state={
             finishedLoading:false,
             theme:'light',
-            commands:[]
+            commands:[],
+            helper: this.helper.bind(this),
+            active: 'WatchTime',
+            refresh: false,
+            viewers: [],
+            db: null
         }
     }
 
@@ -68,6 +76,23 @@ export default class App extends React.Component{
                 })
             })
         }
+        const db = firestore.firestore()
+        db.collection('gamesdonequick_Prod')
+        .get()
+        // .then(res => console.log(res))
+        .then(res => res.docs[0].data())
+        .then(res => {
+            const viewers = Object.entries(res).slice(0, 5).sort((a, b) => {
+                if(a[1] === b[1]) {
+                    return 0;
+                }
+                else {
+                    return (a[1] > b[1]) ? -1 : 1
+                }
+            })
+          this.setState({viewers,
+                         db})
+        })
     }
 
     componentWillUnmount(){
@@ -75,20 +100,60 @@ export default class App extends React.Component{
             this.twitch.unlisten('broadcast', ()=>console.log('successfully unlistened'))
         }
     }
+
+    helper(str) {
+        this.setState({active: str})
+        let endpoint = 1
+        switch(str) {
+          case 'Subs':
+            endpoint = 2
+            break
+          case 'WatchTime':
+            endpoint = 0
+            break
+          case 'Chat':
+            endpoint = 1
+          default:
+            break
+        }
+        this.state.db.collection('gamesdonequick_Prod')
+        .get()
+        // .then(res => console.log(res))
+        .then(res => res.docs[endpoint].data())
+        .then(res => {
+            const viewers = Object.entries(res).slice(0, 5).sort((a, b) => {
+                if(a[1] === b[1]) {
+                    return 0;
+                }
+                else {
+                    return (a[1] > b[1]) ? -1 : 1
+                }
+            })
+          this.setState({viewers})
+        })
+    }
     
     render(){
-        if(this.state.finishedLoading && this.state.commands.length > 0){
-            return (
-                <div className={this.state.theme === 'light' ? "App App-light" : "App App-dark"}>
-                    <CommandListContainer commands={this.state.commands} authentication={this.Authentication} panel={this.anchor === 'panel'} />
-                </div>
-            )
-        }else{
-            return (
-                <div className={this.state.theme === 'light' ? "App App-light" : "App App-dark"}>
-                    No commands configured.
-                </div>
-            )
-        }
+        // if(this.state.finishedLoading && this.state.commands.length > 0){
+        //     return (
+        //         <div className={this.state.theme === 'light' ? "App App-light" : "App App-dark"}>
+        //             <CommandListContainer commands={this.state.commands} authentication={this.Authentication} panel={this.anchor === 'panel'} />
+        //         </div>
+        //     )
+        // }else{
+        //     return (
+        //         <div className={this.state.theme === 'light' ? "App App-light" : "App App-dark"}>
+        //             No commands configured.
+        //         </div>
+        //     )
+        // }
+        return (
+            <div className="container">
+              <h1>Top {this.state.active}</h1>
+              <StatsList viewers={this.state.viewers} active={this.state.active}/>
+              <Navbar helper={this.state.helper}/>
+            </div>
+          )
+
     }
 }

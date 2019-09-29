@@ -21,10 +21,11 @@ export default class CommandListContainer extends React.Component{
 
     render(){
         return (
+            
             <div className='wrapper'>
                 <div className='header'>
                     <div className='header-text'>
-                        Bot Commander
+                        Nav Bar
                     </div>
                     {!this.state.panel ? 
                         <div className="header-expand-toggle" onClick={()=>this.expandCommands()}>
