@@ -1,5 +1,5 @@
 # Analytica
----
+
 Analytica is a Twitch Extension that allows the broadcaster to set up a leaderboard for viewers.
 
 This leaderboard has categories of:
